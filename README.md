@@ -5,7 +5,7 @@ AI‑assisted Web dashboard that turns human commands into safe Kubernetes queri
 ## Repo structure
 
 k8s-assistant/
-├─ helm/k8s-assistant/
+├─ helm/
 │  ├─ Chart.yaml
 │  ├─ values.yaml
 │  └─ templates/
@@ -44,4 +44,29 @@ Expose /api/ask that accepts a user prompt.
 Call Ollama (local LLM) over HTTP inside the cluster.
 Translate NL → safe kubectl intents (whitelist), execute via Kubernetes Python client under a dedicated ServiceAccount with read-only RBAC.
 Return structured JSON (answer, raw command, raw data).
+
+## build, tag, and push them to your DockerHub (catalinpredica) with both 0.1.1 and latest tags
+
+# Backend image in catalinpredica/k8s-assistant-backend docker repo
+# cd into backend folder
+cd backend
+
+# build image
+docker build -t catalinpredica/k8s-assistant-backend:0.1.1 -t catalinpredica/k8s-assistant-backend:latest .
+
+# push both tags
+docker push catalinpredica/k8s-assistant-backend:0.1.1
+docker push catalinpredica/k8s-assistant-backend:latest
+
+# Frontend image in catalinpredica/k8s-assistant-frontend docker repo
+# cd into frontend folder
+cd frontend
+
+# build image
+docker build -t catalinpredica/k8s-assistant-frontend:0.1.1 -t catalinpredica/k8s-assistant-frontend:latest .
+
+# push both tags
+docker push catalinpredica/k8s-assistant-frontend:0.1.1
+docker push catalinpredica/k8s-assistant-frontend:latest
+
 

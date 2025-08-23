@@ -2,12 +2,12 @@ replicaCount: 1
 
 image:
   backend:
-    repository: myrepo/k8s-assistant-backend
-    tag: "latest"
+    repository: catalinpredica/k8s-assistant-backend
+    tag: "0.1.1"
     pullPolicy: IfNotPresent
   frontend:
-    repository: myrepo/k8s-assistant-frontend
-    tag: "latest"
+    repository: catalinpredica/k8s-assistant-frontend
+    tag: "0.1.1"
     pullPolicy: IfNotPresent
 
 service:

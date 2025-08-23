@@ -6,10 +6,11 @@ metadata:
     app: {{ include "k8s-assistant.name" . }}
     component: frontend
 spec:
-  type: {{ .Values.service.frontend.type }}
+  type: {{ .Values.service.frontend.type | default "LoadBalancer" }}
   ports:
-    - port: {{ .Values.service.frontend.port }}
-      targetPort: {{ .Values.service.frontend.port }}
+    - name: http
+      port: {{ .Values.service.frontend.port | default 80 }}       # Exposed port
+      targetPort: {{ .Values.service.frontend.targetPort | default 3000 }} # Container port
       protocol: TCP
   selector:
     app: {{ include "k8s-assistant.name" . }}
