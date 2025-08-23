@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "k8s-assistant.fullname" . }}-backend
+  labels:
+    app: {{ include "k8s-assistant.name" . }}
+    component: backend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "k8s-assistant.name" . }}
+      component: backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "k8s-assistant.name" . }}
+        component: backend
+    spec:
+      serviceAccountName: {{ include "k8s-assistant.serviceAccountName" . }}
+      containers:
+        - name: backend
+          image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag }}"
+          imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.backend.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "k8s-assistant.fullname" . }}-config
+            - secretRef:
+                name: {{ include "k8s-assistant.fullname" . }}-secret

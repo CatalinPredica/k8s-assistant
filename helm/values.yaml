@@ -1,0 +1,48 @@
+replicaCount: 1
+
+image:
+  backend:
+    repository: myrepo/k8s-assistant-backend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  frontend:
+    repository: myrepo/k8s-assistant-frontend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+service:
+  backend:
+    type: ClusterIP
+    port: 8000
+  frontend:
+    type: ClusterIP
+    port: 80
+
+ingress:
+  enabled: false
+  className: nginx
+  hosts:
+    - host: assistant.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+serviceAccount:
+  create: true
+  name: ""
+
+rbac:
+  create: true
+
+config:
+  BACKEND_LOG_LEVEL: info
+
+secret:
+  enabled: true
+  apiKey: "changeme"   # Example, replace in production

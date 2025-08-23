@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "k8s-assistant.fullname" . }}-frontend
+  labels:
+    app: {{ include "k8s-assistant.name" . }}
+    component: frontend
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "k8s-assistant.name" . }}
+      component: frontend
+  template:
+    metadata:
+      labels:
+        app: {{ include "k8s-assistant.name" . }}
+        component: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.image.frontend.repository }}:{{ .Values.image.frontend.tag }}"
+          imagePullPolicy: {{ .Values.image.frontend.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.frontend.port }}
