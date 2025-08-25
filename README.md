@@ -69,4 +69,19 @@ docker build -t catalinpredica/k8s-assistant-frontend:0.1.1 -t catalinpredica/k8
 docker push catalinpredica/k8s-assistant-frontend:0.1.1
 docker push catalinpredica/k8s-assistant-frontend:latest
 
+helm upgrade test-release ./helm
+
+
+
+cd backend
+docker build -t catalinpredica/k8s-assistant-backend:0.3.6 .
+docker push catalinpredica/k8s-assistant-backend:0.3.6
+cd ..
+helm upgrade test-release ./helm
+
+cd frontend
+docker build -t catalinpredica/k8s-assistant-frontend:0.1.9 .
+docker push catalinpredica/k8s-assistant-frontend:0.1.9
+cd ..
+helm upgrade test-release ./helm
 

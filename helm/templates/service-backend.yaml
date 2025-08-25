@@ -10,7 +10,7 @@ spec:
   ports:
     - name: http
       port: {{ .Values.service.backend.port | default 80 }}       # Service port (used inside cluster)
-      targetPort: {{ .Values.service.backend.targetPort | default 8080 }}  # Container port
+      targetPort: {{ .Values.service.backend.targetPort | default 8000 }}  # Container port
       protocol: TCP
   selector:
     app: {{ include "k8s-assistant.name" . }}

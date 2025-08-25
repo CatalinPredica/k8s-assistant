@@ -17,15 +17,23 @@ spec:
         app: {{ include "k8s-assistant.name" . }}
         component: backend
     spec:
-      serviceAccountName: {{ include "k8s-assistant.serviceAccountName" . }}
+      serviceAccountName: "{{ include "k8s-assistant.serviceAccountName" . }}"
       containers:
         - name: backend
           image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag }}"
           imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.backend.port }}
+            - containerPort: {{ .Values.service.backend.targetPort | default 8000 }}
           envFrom:
             - configMapRef:
                 name: {{ include "k8s-assistant.fullname" . }}-config
-            - secretRef:
-                name: {{ include "k8s-assistant.fullname" . }}-secret
+          env:
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "k8s-assistant.fullname" . }}-secret
+                  key: API_KEY
+            - name: USE_LLM
+              value: "true"
+            - name: GEMINI_MODEL
+              value: {{ .Values.env.GEMINI_MODEL | quote }}

@@ -3,20 +3,22 @@ replicaCount: 1
 image:
   backend:
     repository: catalinpredica/k8s-assistant-backend
-    tag: "0.1.1"
+    tag: "0.3.6"
     pullPolicy: IfNotPresent
   frontend:
     repository: catalinpredica/k8s-assistant-frontend
-    tag: "0.1.1"
+    tag: "0.1.9"
     pullPolicy: IfNotPresent
 
 service:
   backend:
     type: ClusterIP
     port: 8000
+    targetPort: 8000
   frontend:
     type: ClusterIP
     port: 80
+    targetPort: 80
 
 ingress:
   enabled: false
@@ -43,6 +45,13 @@ rbac:
 config:
   BACKEND_LOG_LEVEL: info
 
+# Configuration for the Gemini API key secret.
+# IMPORTANT: You must create this secret manually before deploying the chart.
+# For example: kubectl create secret generic k8s-assistant-gemini-secret --from-literal=api-key='YOUR_API_KEY'
 secret:
   enabled: true
-  apiKey: "changeme"   # Example, replace in production
+  name: "k8s-assistant-gemini-secret"
+  apiKey: "AIzaSyC1amKfTo7I7VNGNDjALLMbLqodMc-CYm0"
+
+env:
+  GEMINI_MODEL: "gemini-2.5-flash"

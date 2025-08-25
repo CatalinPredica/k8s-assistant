@@ -2,13 +2,13 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "k8s-assistant.fullname" . }}
+  name: {{ include "k8s-assistant.fullname" . }}-admin
 subjects:
   - kind: ServiceAccount
-    name: {{ include "k8s-assistant.serviceAccountName" . }}
+    name: "{{ include "k8s-assistant.serviceAccountName" . }}"
     namespace: {{ .Release.Namespace }}
 roleRef:
-  kind: ClusterRole
-  name: {{ include "k8s-assistant.fullname" . }}
   apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
 {{- end }}

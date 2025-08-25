@@ -10,7 +10,7 @@ spec:
   ports:
     - name: http
       port: {{ .Values.service.frontend.port | default 80 }}       # Exposed port
-      targetPort: {{ .Values.service.frontend.targetPort | default 3000 }} # Container port
+      targetPort: {{ .Values.service.frontend.targetPort | default 80 }} # Container port
       protocol: TCP
   selector:
     app: {{ include "k8s-assistant.name" . }}
