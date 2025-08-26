@@ -46,6 +46,10 @@ async def execute(intent: Dict[str, Any]) -> Dict[str, Any]:
                 return {"items": [i.metadata.name for i in items]}
 
             if resource in ("pods", "pod"):
+                def format_pod(pod_obj, ns_name):
+                    phase = pod_obj.status.phase or "Unknown"
+                    return f"{ns_name}/{pod_obj.metadata.name} ({phase})"
+
                 if all_namespaces:
                     all_pods = []
                     namespaces = core.list_namespace().items
@@ -54,14 +58,14 @@ async def execute(intent: Dict[str, Any]) -> Dict[str, Any]:
                         try:
                             pods = core.list_namespaced_pod(ns_name).items
                             for pod in pods:
-                                all_pods.append(f"{ns_name}/{pod.metadata.name}")
+                                all_pods.append(format_pod(pod, ns_name))
                         except Exception:
                             continue
                     return {"items": all_pods, "all_namespaces": True}
                 else:
                     ns = ns or "default"
                     items = core.list_namespaced_pod(ns).items
-                    return {"items": [p.metadata.name for p in items], "namespace": ns}
+                    return {"items": [format_pod(p, ns) for p in items], "namespace": ns}
 
             if resource == "services":
                 if all_namespaces:

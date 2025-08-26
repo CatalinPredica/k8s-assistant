@@ -59,7 +59,6 @@ export default function App() {
             </div>
           </div>
           
-          {/* New section to display the raw Gemini response */}
           <div style={{
             background: '#f8f9fa',
             padding: '20px',
@@ -119,8 +118,23 @@ export default function App() {
                   </div>
                   <div style={{ display: 'grid', gap: '8px' }}>
                     {resp.result.items.map((item: string, index: number) => {
-                      // Check if item contains namespace (format: "namespace/resource-name")
-                      const hasNamespace = item.includes('/');
+                      // Extract pod name and status if available
+                      let displayName = item;
+                      let status = "";
+                      if (item.includes(" (")) {
+                        const parts = item.split(" (");
+                        displayName = parts[0];
+                        status = parts[1].replace(")", "");
+                      }
+
+                      const hasNamespace = displayName.includes('/');
+
+                      // Color coding for status
+                      let statusColor = '#6c757d'; // default grey
+                      if (status === 'Running') statusColor = '#28a745';
+                      else if (status === 'Pending') statusColor = '#ffc107';
+                      else if (status === 'CrashLoopBackOff' || status === 'Failed') statusColor = '#dc3545';
+
                       return (
                         <div key={index} style={{
                           background: hasNamespace ? '#e3f2fd' : '#e9ecef',
@@ -129,9 +143,12 @@ export default function App() {
                           fontFamily: 'monospace',
                           fontSize: '13px',
                           color: hasNamespace ? '#1565c0' : '#495057',
-                          border: hasNamespace ? '1px solid #bbdefb' : 'none'
+                          border: hasNamespace ? '1px solid #bbdefb' : 'none',
+                          display: 'flex',
+                          justifyContent: 'space-between'
                         }}>
-                          {item}
+                          <span>{displayName}</span>
+                          {status && <span style={{ color: statusColor }}>{status}</span>}
                         </div>
                       );
                     })}
