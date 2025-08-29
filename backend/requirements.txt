@@ -1,7 +1,10 @@
-fastapi==0.111.0
-uvicorn[standard]==0.30.3
-pydantic==2.8.2
-httpx==0.27.0
-kubernetes==29.0.0
-python-dotenv==1.0.1
-google-generativeai==0.7.0
+# requirements.txt
+# This file lists all Python dependencies required for the backend of the project.
+# Install these packages using pip to ensure the backend runs correctly.
+
+fastapi              # Web framework for building APIs
+uvicorn[standard]    # ASGI server for running FastAPI applications
+pydantic             # Data validation and settings management using Python type annotations
+kubernetes           # Python client for interacting with Kubernetes clusters
+google-generativeai  # Integrates Google Generative AI for AI-powered features
+python-multipart     # Handles multipart/form-data (file uploads) in FastAPI

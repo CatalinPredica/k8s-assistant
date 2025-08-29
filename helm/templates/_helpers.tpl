@@ -1,24 +1,56 @@
-{{/*
-Return the name of the chart
-*/}}
+{{/* vim: set filetype=gotexttmpl: */}}
 {{- define "k8s-assistant.name" -}}
-{{- .Chart.Name | trim -}}
-{{- end -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
 
-{{/*
-Return the full name of the release
-*/}}
 {{- define "k8s-assistant.fullname" -}}
-{{- printf "%s-%s" (.Release.Name | trim) (.Chart.Name | trim) | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
 
 {{/*
-Return the service account name
+Create chart name and version as a label
+*/}}
+{{- define "k8s-assistant.chart" -}}
+{{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Common labels
+*/}}
+{{- define "k8s-assistant.labels" -}}
+app.kubernetes.io/name: {{ include "k8s-assistant.name" . }}
+helm.sh/chart: {{ include "k8s-assistant.chart" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels
+*/}}
+{{- define "k8s-assistant.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "k8s-assistant.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{/*
+Create the name of the service account to use
 */}}
 {{- define "k8s-assistant.serviceAccountName" -}}
-{{- if .Values.serviceAccount.name }}
-{{- .Values.serviceAccount.name | trim -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "k8s-assistant.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
-{{- include "k8s-assistant.fullname" . | trim }}-sa
-{{- end -}}
-{{- end -}}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}

@@ -1,87 +1,121 @@
-## Natural‑Language Kubernetes ops
+# Kubernetes Assistant (k8s-assistant) - Natural‑Language Kubernetes ops
 
-AI‑assisted Web dashboard that turns human commands into safe Kubernetes queries (e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers. Deployable with Helm into any AKS/EKS (or vanilla k8s).
+An AI-powered Web dashboard assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
+(e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers. Deployable with Helm into any AKS/EKS (or vanilla k8s).
+This project consists of **two main components** deployed as containers via Helm:
 
-## Repo structure
+1. **Backend**: Python FastAPI service integrating Gemini AI for reasoning and command generation.
+2. **Frontend**: React-based dashboard for user interaction.
 
-k8s-assistant/
-├─ helm/
-│  ├─ Chart.yaml
-│  ├─ values.yaml
-│  └─ templates/
-│     ├─ deployment-backend.yaml
-│     ├─ deployment-frontend.yaml
-│     ├─ service-backend.yaml
-│     ├─ service-frontend.yaml
-│     ├─ ingress.yaml
-│     ├─ serviceaccount.yaml
-│     ├─ clusterrole.yaml
-│     ├─ clusterrolebinding.yaml
-│     ├─ configmap.yaml
-│     ├─ secret.yaml
-│     └─ networkpolicy.yaml
-├─ backend/
-│  ├─ app.py
-│  ├─ k8s.py
-│  ├─ ai.py
-│  ├─ requirements.txt
-│  └─ Dockerfile
-├─ frontend/
-│  ├─ package.json
-│  ├─ vite.config.ts
-│  ├─ index.html
-│  └─ Dockerfile
-│  └─ src/
-│     ├─ main.tsx
-│     └─ App.tsx
-└─ README.md
+---
+
+## Features
+
+- **Natural language queries** → AI generates Kubernetes commands and interprets results.
+- **Backend**: Python + FastAPI + Gemini AI model.
+- **Frontend**: React app for interactive web UI.
+- **Helm deployment** → Easily deploy both components on any Kubernetes cluster.
+- **RBAC & ServiceAccount** → Secure access to Kubernetes API.
+- **Secret management** → Users provide their own Gemini API key; not stored in repo.
+
+---
+
+## Architecture
+
+[User] —> [React Frontend] —> [Python Backend / FastAPI] —> [Kubernetes Cluster]
+(Gemini AI reasoning)
+
+- Frontend communicates with backend via API.
+- Backend interacts with the Kubernetes API and uses Gemini AI to interpret queries.
+- Each component runs in its own container.
+
+Key Points in this Workflow
+	1.	Backend never interprets intent, only executes kubectl_command and maintains step structure.
+	2.	AI only decides intent & next action — never manipulates YAML structure.
+	•	What command(s) to run.
+	•	When to populate final_output.
+	3.	Empty steps are created by backend for AI to fill if needed — ensures flexibility for multi-step reasoning.
+	4.	Single loop is enough for simple queries, multiple loops will be needed for complex issues (e.g., CrashLoopBackOff).
+  5.	Loops continue until final_output is populated — AI decides when reasoning is complete.
+
+The design is robust because:
+	•	You never trust AI with YAML formatting → schema is always correct.
+	•	AI has full context of previous steps → can make intelligent multi-step decisions.
+	•	Backend can audit every command executed → important for security.
+	•	New types of queries or resources can be handled without hardcoding additional logic in backend.
+---
+
+## Prerequisites
+
+- Kubernetes cluster (v1.24+ recommended)
+- Helm v3+
+- Python 3.10+ for local backend testing (optional)
+- Gemini AI API key (must be provided)
+
+---
+
+## Installation (Local / Development)
+
+  1. Clone the repo:
+
+```bash
+git clone https://github.com/CatalinPredica/k8s-assistant.git
+cd helm
+```
+
+	2. Create a file values.secret.yaml with your Gemini API key:
+secret:
+apiKey: "YOUR_REAL_API_KEY"
+
+  3. Deploy with Helm:
+```bash
+helm upgrade --install test-release ./ -f values.secret.yaml --namespace k8s-assistant 
+```
+Helm will fail if apiKey is not provided, enforcing secure deployment.
+
+## Components
+⸻
+Frontend
+	•	React + Vite application
+	•	Communicates with backend via /api endpoints
+	•	Can be deployed via Helm along with backend
+	•	Supports markdown response rendering
+
+⸻
+Backend
+	•	Python FastAPI service
+	•	Uses Kubernetes Python client to interact with cluster
+	•	Integrates Gemini AI for reasoning
+	•	Exposes /api/ask endpoint for frontend queries
+	•	Logs structured data for debugging
+
+⸻
+Security Considerations
+	•	RBAC enabled to ensure least-privilege access
+	•	ServiceAccount is created specifically for this application
+	•	Secrets managed via Kubernetes Secret object
+	•	API keys never stored in repo
+
+⸻
+Contributing
+
+Contributions welcome!
+	•	Open issues for bugs or feature requests
+	•	Submit pull requests for improvements
+	•	Follow Helm best practices and maintain secret handling
 
 
-# Backend (Python FastAPI)
 
-Goals:
-Expose /api/ask that accepts a user prompt.
-Call Ollama (local LLM) over HTTP inside the cluster.
-Translate NL → safe kubectl intents (whitelist), execute via Kubernetes Python client under a dedicated ServiceAccount with read-only RBAC.
-Return structured JSON (answer, raw command, raw data).
-
-## build, tag, and push them to your DockerHub (catalinpredica) with both 0.1.1 and latest tags
-
-# Backend image in catalinpredica/k8s-assistant-backend docker repo
-# cd into backend folder
 cd backend
-
-# build image
-docker build -t catalinpredica/k8s-assistant-backend:0.1.1 -t catalinpredica/k8s-assistant-backend:latest .
-
-# push both tags
-docker push catalinpredica/k8s-assistant-backend:0.1.1
-docker push catalinpredica/k8s-assistant-backend:latest
-
-# Frontend image in catalinpredica/k8s-assistant-frontend docker repo
-# cd into frontend folder
-cd frontend
-
-# build image
-docker build -t catalinpredica/k8s-assistant-frontend:0.1.1 -t catalinpredica/k8s-assistant-frontend:latest .
-
-# push both tags
-docker push catalinpredica/k8s-assistant-frontend:0.1.1
-docker push catalinpredica/k8s-assistant-frontend:latest
-
-helm upgrade test-release ./helm
-
-
-
-cd backend
-docker build -t catalinpredica/k8s-assistant-backend:0.3.11 .
-docker push catalinpredica/k8s-assistant-backend:0.3.11
+docker build -t catalinpredica/k8s-assistant-backend:1.0.6 .
+docker push catalinpredica/k8s-assistant-backend:1.0.6
 cd ..
-helm upgrade test-release ./helm --namespace k8s-assistant
+helm upgrade test-release ./helm --namespace k8s-assistant -f helm/values.secret.yaml
 
 cd frontend
-docker build -t catalinpredica/k8s-assistant-frontend:0.1.12 .
-docker push catalinpredica/k8s-assistant-frontend:0.1.12
+docker build -t catalinpredica/k8s-assistant-frontend:1.0.18 .
+docker push catalinpredica/k8s-assistant-frontend:1.0.18
 cd ..
-helm upgrade test-release ./helm  --namespace k8s-assistant
+helm upgrade test-release ./helm  --namespace k8s-assistant -f helm/values.secret.yaml
+
 

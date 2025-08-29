@@ -1,0 +1,4 @@
+helm/values.secret.yaml
+helm/.DS_Store
+frontend/.DS_Store
+.DS_Store

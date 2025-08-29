@@ -2,7 +2,9 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "k8s-assistant.fullname" . }}-admin
+  name: {{ include "k8s-assistant.fullname" . }}-k8s-agent
+  labels:
+    {{- include "k8s-assistant.labels" . | nindent 4 }}
 subjects:
   - kind: ServiceAccount
     name: "{{ include "k8s-assistant.serviceAccountName" . }}"

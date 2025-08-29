@@ -23,7 +23,8 @@ spec:
           image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag }}"
           imagePullPolicy: {{ .Values.image.backend.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.backend.targetPort | default 8000 }}
+            - name: http
+              containerPort: {{ .Values.service.backend.targetPort | default 8000 }}
           envFrom:
             - configMapRef:
                 name: {{ include "k8s-assistant.fullname" . }}-config
@@ -31,9 +32,7 @@ spec:
             - name: GEMINI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "k8s-assistant.fullname" . }}-secret
-                  key: API_KEY
-            - name: USE_LLM
-              value: "true"
+                  name: {{ .Values.secret.name }}
+                  key: api-key
             - name: GEMINI_MODEL
               value: {{ .Values.env.GEMINI_MODEL | quote }}

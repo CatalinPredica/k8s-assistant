@@ -1,189 +1,131 @@
-import React, { useState } from 'react'
+import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import "./App.css"; // Import the stylesheet for styling the application components
 
-export default function App() {
-  const [prompt, setPrompt] = useState("")
-  const [resp, setResp] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+/**
+ * Main application component for the Kubernetes Assistant frontend.
+ * This component handles user input, communicates with the backend API,
+ * and displays the AI-generated responses.
+ */
+function App() {
+  // State to hold the user's input query string
+  const [userInput, setUserInput] = useState("");
+  // State to store the response object returned from the backend API
+  const [response, setResponse] = useState(null);
+  // State flag to indicate whether a request is currently being processed
+  const [loading, setLoading] = useState(false);
+  // State to capture and display any error messages from the API or network
+  const [error, setError] = useState(null);
 
-  const ask = async () => {
-    setLoading(true)
-    const r = await fetch('/api/ask', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt })
-    })
-    const j = await r.json()
-    setResp(j)
-    setLoading(false)
-  }
+  /**
+   * Event handler for form submission.
+   * Handles sending the user's query to the backend API asynchronously,
+   * manages loading and error states, and updates the response state on success.
+   * 
+   * @param {React.FormEvent} e - The form submission event
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent default form submission to avoid page reload
+
+    // Reset states to prepare for new request
+    setLoading(true);    // Set loading to true to disable inputs and show loader
+    setError(null);      // Clear any previous errors
+    setResponse(null);   // Clear previous response data
+
+    try {
+      // Make a POST request to the backend API endpoint '/api/ask'
+      // The backend expects a JSON body with the user's input under 'user_input' key
+      const res = await fetch("/api/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify JSON content type for proper parsing
+        },
+        body: JSON.stringify({ user_input: userInput }),
+      });
+
+      // Robust error handling: check for HTTP response status
+      if (!res.ok) {
+        // If status is not OK (200-299), throw an error to be caught below
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+
+      // Parse the JSON response from the backend
+      const data = await res.json();
+
+      // Update the response state with the parsed data to trigger UI update
+      setResponse(data);
+    } catch (e) {
+      // Handle network errors or unexpected exceptions gracefully
+      setError("Failed to fetch from the backend. Please check your network and backend server.");
+      // Log the error to the console for debugging and monitoring purposes
+      console.error(e);
+    } finally {
+      // Always reset loading state regardless of success or failure
+      setLoading(false);
+    }
+  };
 
   return (
-    <div style={{ maxWidth: 900, margin: '40px auto', fontFamily: 'Inter, system-ui' }}>
-      <h1>k8s-assistant</h1>
-      <p>Ask in natural language. Example: <code>show pods in operations</code> or <code>logs of api-gateway in prod</code></p>
-      <div style={{ display: 'flex', gap: 8 }}>
-        <input 
-          style={{ flex: 1, padding: 8 }} 
-          value={prompt} 
-          onChange={e=>setPrompt(e.target.value)} 
-          onKeyDown={e => e.key === 'Enter' && !loading && ask()}
-          placeholder="Your question" 
+    // Root container div for the entire application UI
+    <div className="app-container">
+      {/* Header section with title and description */}
+      <header className="app-header">
+        <h1>Kubernetes Assistant</h1>
+        <p>
+          Enter your request for the Kubernetes Assistant below. The AI will generate and execute commands to fulfill your request.
+        </p>
+      </header>
+
+      {/* Form container for user input and submission */}
+      <form onSubmit={handleSubmit} className="form-container">
+        <input
+          type="text"
+          value={userInput}
+          // Controlled input: update state on every keystroke to keep UI and state in sync
+          onChange={(e) => setUserInput(e.target.value)} // <-- THE FIX IS HERE
+          placeholder="e.g., show me all pods in the default namespace"
+          disabled={loading} // Disable input while loading to prevent multiple submissions
+          aria-label="User input for Kubernetes Assistant query"
         />
-        <button onClick={ask} disabled={loading}>{loading?'Asking...':'Ask'}</button>
-      </div>
-      {resp && (
-        <div style={{ marginTop: 20 }}>
-          <div style={{ 
-            background: '#f8f9fa', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            border: '1px solid #e9ecef',
-            marginBottom: '20px'
-          }}>
-            <h3 style={{ margin: '0 0 15px 0', color: '#495057' }}>
-              Command Intent
-            </h3>
-            <div style={{ 
-              background: 'white', 
-              padding: '15px', 
-              borderRadius: '6px', 
-              border: '1px solid #dee2e6',
-              fontFamily: 'monospace',
-              fontSize: '14px'
-            }}>
-              <div><strong>Action:</strong> <span style={{ color: '#007bff' }}>{resp.intent.action}</span></div>
-              <div><strong>Resource:</strong> <span style={{ color: '#28a745' }}>{resp.intent.resource}</span></div>
-              {resp.intent.namespace && (
-                <div><strong>Namespace:</strong> <span style={{ color: '#6f42c1' }}>{resp.intent.namespace}</span></div>
-              )}
+        <button type="submit" disabled={loading} aria-busy={loading}>
+          {/* Show a loader animation during async request, else show 'Ask' */}
+          {loading ? <div className="loader" aria-live="polite" aria-label="Loading"></div> : "Ask"}
+        </button>
+      </form>
+
+      {/* Display error message if any error occurs */}
+      {error && <div className="error-message" role="alert">Error: {error}</div>}
+
+      {/* Conditionally render the response container if a response exists */}
+      {response && (
+        <div className="response-container">
+          <h2>Assistant Response:</h2>
+          {/* If the response includes a final output, render it as markdown for rich text display */}
+          {response.final_output ? (
+            <div className="markdown-response">
+              <ReactMarkdown>{response.final_output}</ReactMarkdown>
             </div>
-          </div>
-          
-          <div style={{
-            background: '#f8f9fa',
-            padding: '20px',
-            borderRadius: '8px',
-            border: '1px solid #e9ecef',
-            marginBottom: '20px'
-          }}>
-            <h3 style={{ margin: '0 0 15px 0', color: '#495057' }}>
-              Gemini Raw Response
-            </h3>
-            <div style={{
-              background: 'white',
-              padding: '15px',
-              borderRadius: '6px',
-              border: '1px solid #dee2e6',
-              fontFamily: 'monospace',
-              fontSize: '14px',
-              whiteSpace: 'pre-wrap'
-            }}>
-              {JSON.stringify(resp.intent, null, 2)}
+          ) : (
+            // If no final output, provide a fallback message and display raw steps for transparency/debugging
+            <div>
+              <p>No final output. Check the steps for details.</p>
+              <pre>{JSON.stringify(response.steps, null, 2)}</pre>
             </div>
-          </div>
+          )}
+        </div>
+      )}
 
-          <div style={{ 
-            background: '#f8f9fa', 
-            padding: '20px', 
-            borderRadius: '8px', 
-            border: '1px solid #e9ecef'
-          }}>
-            <h3 style={{ margin: '0 0 15px 0', color: '#495057' }}>
-              Results
-            </h3>
-            {resp.result.error ? (
-              <div style={{ 
-                background: '#f8d7da', 
-                color: '#721c24', 
-                padding: '15px', 
-                borderRadius: '6px', 
-                border: '1px solid #f5c6cb'
-              }}>
-                <strong>Error:</strong> {resp.result.error}
-              </div>
-            ) : resp.result.items ? (
-              <div>
-                <div style={{ 
-                  background: 'white', 
-                  padding: '15px', 
-                  borderRadius: '6px', 
-                  border: '1px solid #dee2e6'
-                }}>
-                  <div style={{ marginBottom: '10px', fontWeight: 'bold', color: '#495057' }}>
-                    {resp.result.all_namespaces ? (
-                      <>Found {resp.result.items.length} {resp.intent.resource} across all namespaces:</>
-                    ) : (
-                      <>Found {resp.result.items.length} {resp.intent.resource} in {resp.result.namespace || 'default'} namespace:</>
-                    )}
-                  </div>
-                  <div style={{ display: 'grid', gap: '8px' }}>
-                    {resp.result.items.map((item: string, index: number) => {
-                      // Extract pod name and status if available
-                      let displayName = item;
-                      let status = "";
-                      if (item.includes(" (")) {
-                        const parts = item.split(" (");
-                        displayName = parts[0];
-                        status = parts[1].replace(")", "");
-                      }
-
-                      const hasNamespace = displayName.includes('/');
-
-                      // Color coding for status
-                      let statusColor = '#6c757d'; // default grey
-                      if (status === 'Running') statusColor = '#28a745';
-                      else if (status === 'Pending') statusColor = '#ffc107';
-                      else if (status === 'CrashLoopBackOff' || status === 'Failed') statusColor = '#dc3545';
-
-                      return (
-                        <div key={index} style={{
-                          background: hasNamespace ? '#e3f2fd' : '#e9ecef',
-                          padding: '8px 12px',
-                          borderRadius: '4px',
-                          fontFamily: 'monospace',
-                          fontSize: '13px',
-                          color: hasNamespace ? '#1565c0' : '#495057',
-                          border: hasNamespace ? '1px solid #bbdefb' : 'none',
-                          display: 'flex',
-                          justifyContent: 'space-between'
-                        }}>
-                          <span>{displayName}</span>
-                          {status && <span style={{ color: statusColor }}>{status}</span>}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : resp.result.log ? (
-              <div style={{ 
-                background: 'white', 
-                padding: '15px', 
-                borderRadius: '6px', 
-                border: '1px solid #dee2e6',
-                fontFamily: 'monospace',
-                fontSize: '12px',
-                whiteSpace: 'pre-wrap',
-                maxHeight: '400px',
-                overflow: 'auto'
-              }}>
-                {resp.result.log}
-              </div>
-            ) : (
-              <div style={{ 
-                background: 'white', 
-                padding: '15px', 
-                borderRadius: '6px', 
-                border: '1px solid #dee2e6',
-                fontFamily: 'monospace',
-                fontSize: '14px'
-              }}>
-                {JSON.stringify(resp.result, null, 2)}
-              </div>
-            )}
-          </div>
+      {/* Additional debug section showing the full steps data returned by backend.
+          This is useful for developers to trace the AI's step-by-step reasoning.
+          This block should be removed or hidden in production. */}
+      {response && (
+        <div className="response-container debug-container">
+          <h2>Full Steps (for debugging):</h2>
+          <pre>{JSON.stringify(response.steps, null, 2)}</pre>
         </div>
       )}
     </div>
-  )
+  );
 }
+
+export default App;
