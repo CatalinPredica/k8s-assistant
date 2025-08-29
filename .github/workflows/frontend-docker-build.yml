@@ -1,0 +1,161 @@
+name: K8S Assistant - Frontend Docker Build and Push
+
+on:
+  push:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-docker-build.yml'
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-docker-build.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Fetch all remote tags
+        run: git fetch --tags --force
+
+      - name: Set up QEMU (for cross-platform builds)
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract version from git tags and bump semver (enterprise-grade)
+        id: version
+        run: |
+          # Get the highest semver tag, fallback to 0.1.0
+          latest_tag=$(git tag | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -n 1)
+          if [ -z "$latest_tag" ]; then
+            latest_tag="0.1.0"
+          fi
+          echo "Latest tag: $latest_tag"
+          IFS='.' read -r major minor patch <<< "$latest_tag"
+          # Get last commit message
+          commit_msg=$(git log -1 --pretty=%B)
+          echo "Last commit message: $commit_msg"
+          # Determine what to bump
+          if echo "$commit_msg" | grep -q '\[major\]'; then
+            major=$((major+1))
+            minor=0
+            patch=0
+            bump="major"
+          elif echo "$commit_msg" | grep -q '\[minor\]'; then
+            minor=$((minor+1))
+            patch=0
+            bump="minor"
+          else
+            patch=$((patch+1))
+            bump="patch"
+          fi
+          new_tag="$major.$minor.$patch"
+          echo "Bump type: $bump"
+          echo "New tag: $new_tag"
+          echo "version=$new_tag" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image locally (no push)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: false
+          tags: |
+            k8s-assistant-frontend:scan
+
+      - name: Scan Docker image with Trivy
+        uses: aquasecurity/trivy-action@0.31.0
+        with:
+          image-ref: k8s-assistant-frontend:scan
+          format: table
+          output: trivy-report.txt
+          exit-code: 0
+          severity: MEDIUM,HIGH,CRITICAL
+
+      - name: Upload Trivy scan report
+        uses: actions/upload-artifact@v4
+        with:
+          name: trivy-scan-report
+          path: trivy-report.txt
+
+      - name: Fail if vulnerabilities found
+        run: |
+          if grep -qE 'CRITICAL|HIGH|MEDIUM' trivy-report.txt; then
+            echo "Vulnerabilities found! Failing the workflow."
+            exit 1
+          fi
+
+      - name: Tag and push Docker image after passing scan
+        run: |
+          docker tag k8s-assistant-frontend:scan catalinpredica/k8s-assistant-frontend:${{ steps.version.outputs.version }}
+          docker tag k8s-assistant-frontend:scan catalinpredica/k8s-assistant-frontend:latest
+          docker push catalinpredica/k8s-assistant-frontend:${{ steps.version.outputs.version }}
+          docker push catalinpredica/k8s-assistant-frontend:latest
+
+          fi
+
+      - name: Set up Git for pushing tags
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git config user.name "GitHub Actions"
+          git config user.email "catalinpredica@gmail.com"  # Use your email or a generic one
+                        
+      - name: Create Git tag for new version
+        run: |
+          git fetch --tags
+          if git rev-parse ${{ steps.version.outputs.version }} >/dev/null 2>&1; then
+            echo "Tag ${{ steps.version.outputs.version }} already exists. Skipping tag creation."
+            exit 0
+          fi
+          git config user.name "GitHub Actions"
+          git config user.email "catalinpredica@gmail.com"
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+          
+      - name: Update, commit, and push helm/values.yaml with new image tag
+        run: |
+          sed -i 's|\(repository: catalinpredica/k8s-assistant-frontend\).*|\1:${{ steps.version.outputs.version }}|' helm/values.yaml
+          echo "Updated helm/values.yaml to use catalinpredica/k8s-assistant-frontend:${{ steps.version.outputs.version }}"
+          git config user.name "GitHub Actions"
+          git config user.email "catalinpredica@gmail.com"
+          git add helm/values.yaml
+          git commit -m "chore: update helm/values.yaml to image tag ${{ steps.version.outputs.version }}" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Release ${{ steps.version.outputs.version }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+
+      - name: Update README.md with latest release
+        run: |
+          latest_tag=${{ steps.version.outputs.version }}
+          latest_url="https://github.com/CatalinPredica/TMJ-infra/releases/tag/$latest_tag"
+          readme="README.md"
+          # Remove existing Latest Version section if present
+          sed -i '/^## Latest Version$/,/^$/d' "$readme"
+          # Insert new Latest Version section at the top
+          tmpfile=$(mktemp)
+          echo -e "## Latest Version\n\nThe latest release is [$latest_tag]($latest_url)\n" > "$tmpfile"
+          cat "$readme" >> "$tmpfile"
+          mv "$tmpfile" "$readme"
+          git config user.name "GitHub Actions"
+          git config user.email "catalinpredica@gmail.com"
+          git add "$readme"
+          git commit -m "docs: update README.md with latest release $latest_tag" || echo "No changes to commit"
+          git push origin HEAD:${GITHUB_REF#refs/heads/}

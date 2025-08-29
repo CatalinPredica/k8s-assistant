@@ -1,4 +1,18 @@
+# Ignore Helm secrets
 helm/values.secret.yaml
-helm/.DS_Store
-frontend/.DS_Store
+
+# Ignore Node modules
+frontend/node_modules/
+
+# Ignore Python caches and compiled files
+backend/__pycache__/
+*.pyc
+
+# Ignore OS files
 .DS_Store
+
+# Ignore log files
+*.log
+
+# Ignore local environment files
+.env
