@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Keep frontend Docker base images up to date
+  # Keep frontend Docker base images up to date 
   - package-ecosystem: "docker"
     directory: "/frontend"
     schedule:
