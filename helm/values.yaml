@@ -1,5 +1,4 @@
 replicaCount: 1
-
 image:
   backend:
     repository: catalinpredica/k8s-assistant-backend
@@ -7,9 +6,8 @@ image:
     pullPolicy: IfNotPresent
   frontend:
     repository: catalinpredica/k8s-assistant-frontend
-    tag: "1.0.18"
+    tag: "0.1.2"
     pullPolicy: IfNotPresent
-
 service:
   backend:
     type: ClusterIP
@@ -19,27 +17,21 @@ service:
     type: ClusterIP
     port: 80
     targetPort: 80
-
 resources: {}
 nodeSelector: {}
 tolerations: []
 affinity: {}
-
 serviceAccount:
   create: true
   name: ""
-
 rbac:
   create: true
-
 config:
   BACKEND_LOG_LEVEL: info
-
 # Configuration for the Gemini API key secret.
 secret:
   enabled: true
   name: "k8s-assistant-gemini-secret"
-  apiKey: ""   # users must provide their own API key here
-
+  apiKey: "" # users must provide their own API key here
 env:
   GEMINI_MODEL: "gemini-2.5-flash"
