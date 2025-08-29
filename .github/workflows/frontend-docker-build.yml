@@ -122,12 +122,12 @@ jobs:
           git tag ${{ steps.version.outputs.version }}
           git push origin ${{ steps.version.outputs.version }}
           
-      - name: Update, commit, and push helm/values.yaml with new image tag
+      - name: Update Helm values.yaml with new frontend image tag
         run: |
-          sed -i 's|\(repository: catalinpredica/k8s-assistant-frontend\).*|\1:${{ steps.version.outputs.version }}|' helm/values.yaml
-          echo "Updated helm/values.yaml to use catalinpredica/k8s-assistant-frontend:${{ steps.version.outputs.version }}"
+          yq -i '.image.frontend.tag = "${{ steps.version.outputs.version }}"' helm/values.yaml
+          echo "Updated helm/values.yaml frontend tag to ${{ steps.version.outputs.version }}"
           git config user.name "GitHub Actions"
-          git config user.email "catalinpredica@gmail.com"
+          git config user.email "actions@github.com"
           git add helm/values.yaml
           git commit -m "chore: update helm/values.yaml to image tag ${{ steps.version.outputs.version }}" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
