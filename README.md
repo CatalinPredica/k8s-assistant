@@ -1,3 +1,7 @@
+## Latest Version
+
+The latest release is [0.1.1](https://github.com/CatalinPredica/TMJ-infra/releases/tag/0.1.1)
+
 # Kubernetes Assistant
 
 An AI-powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
