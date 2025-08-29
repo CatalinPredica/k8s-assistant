@@ -1,4 +1,4 @@
-# Kubernetes Assistant (k8s-assistant) - Natural‑Language Kubernetes ops
+# Kubernetes Assistant - Natural Language OPS
 
 An AI-powered Web dashboard assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
 (e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers. Deployable with Helm into any AKS/EKS (or vanilla k8s).
