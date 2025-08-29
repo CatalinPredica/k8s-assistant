@@ -1,8 +1,9 @@
-# Kubernetes Assistant - Natural Language OPS
+# Kubernetes Assistant
 
-An AI-powered Web dashboard assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
-(e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers. Deployable with Helm into any AKS/EKS (or vanilla k8s).
-This project consists of **two main components** deployed as containers via Helm:
+An AI-powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
+(e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers.
+
+Deployable with Helm into any AKS/EKS (or vanilla k8s). This project consists of **two main components** deployed as containers via Helm:
 
 1. **Backend**: Python FastAPI service integrating Gemini AI for reasoning and command generation.
 2. **Frontend**: React-based dashboard for user interaction.
@@ -30,15 +31,17 @@ This project consists of **two main components** deployed as containers via Helm
 - Each component runs in its own container.
 
 Key Points in this Workflow
+
 	1.	Backend never interprets intent, only executes kubectl_command and maintains step structure.
 	2.	AI only decides intent & next action — never manipulates YAML structure.
 	•	What command(s) to run.
 	•	When to populate final_output.
 	3.	Empty steps are created by backend for AI to fill if needed — ensures flexibility for multi-step reasoning.
 	4.	Single loop is enough for simple queries, multiple loops will be needed for complex issues (e.g., CrashLoopBackOff).
-  5.	Loops continue until final_output is populated — AI decides when reasoning is complete.
+	5.	Loops continue until final_output is populated — AI decides when reasoning is complete.
 
 The design is robust because:
+
 	•	You never trust AI with YAML formatting → schema is always correct.
 	•	AI has full context of previous steps → can make intelligent multi-step decisions.
 	•	Backend can audit every command executed → important for security.
@@ -63,14 +66,19 @@ git clone https://github.com/CatalinPredica/k8s-assistant.git
 cd helm
 ```
 
-	2. Create a file values.secret.yaml with your Gemini API key:
+  2. Create a file values.secret.yaml with your Gemini API key:
+
+```bash
 secret:
 apiKey: "YOUR_REAL_API_KEY"
+```
 
   3. Deploy with Helm:
+
 ```bash
 helm upgrade --install test-release ./ -f values.secret.yaml --namespace k8s-assistant 
 ```
+
 Helm will fail if apiKey is not provided, enforcing secure deployment.
 
 ## Components
