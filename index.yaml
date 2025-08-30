@@ -4,7 +4,7 @@ entries:
   - apiVersion: v2
     appVersion: 1.0.0
     created: "2025-08-30T12:36:14.795576+03:00"
-    description: A Kubernetes Assistant with Ollama, FastAPI backend, and React frontend
+    description: An AI-powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language
     digest: 0aebbf0e170b22a6dd729401ee4f62c9877e1847f370de7d2632cb631298f66d
     name: k8s-assistant
     type: application
