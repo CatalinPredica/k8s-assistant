@@ -141,15 +141,17 @@ jobs:
       - name: Update README.md with latest release
         run: |
           latest_tag=${{ steps.version.outputs.version }}
-          latest_url="https://github.com/CatalinPredica/TMJ-infra/releases/tag/$latest_tag"
+          latest_url="https://github.com/${{ github.repository }}/releases/tag/$latest_tag"
           readme="README.md"
-          # Remove existing Latest Version section if present
-          sed -i '/^## Latest Version$/,/^$/d' "$readme"
-          # Insert new Latest Version section at the top
-          tmpfile=$(mktemp)
-          echo -e "## Latest Version\n\nThe latest release is [$latest_tag]($latest_url)\n" > "$tmpfile"
-          cat "$readme" >> "$tmpfile"
-          mv "$tmpfile" "$readme"
+          # Replace or insert latest version at the top
+          if grep -q "^## Latest Version" "$readme"; then
+            sed -i "1,/^$/ s|^## Latest Version.*|## Latest Version\n\nThe latest release is [$latest_tag]($latest_url)|" "$readme"
+          else
+            tmpfile=$(mktemp)
+            echo -e "## Latest Version\n\nThe latest release is [$latest_tag]($latest_url)\n" > "$tmpfile"
+            cat "$readme" >> "$tmpfile"
+            mv "$tmpfile" "$readme"
+          fi
           git config user.name "GitHub Actions"
           git config user.email "catalinpredica@gmail.com"
           git add "$readme"
