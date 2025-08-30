@@ -87,12 +87,12 @@ jobs:
           name: trivy-scan-report
           path: trivy-report.txt
 
-#      - name: Fail if vulnerabilities found
-#        run: |
-#          if grep -qE 'CRITICAL|HIGH|MEDIUM' trivy-report.txt; then
-#            echo "Vulnerabilities found! Failing the workflow."
-#            exit 1
-#          fi
+      - name: Fail if vulnerabilities found
+        run: |
+          if grep -qE 'CRITICAL|HIGH|MEDIUM' trivy-report.txt; then
+            echo "Vulnerabilities found! Failing the workflow."
+            exit 1
+          fi
 
       - name: Tag and push Docker image after passing scan
         run: |
