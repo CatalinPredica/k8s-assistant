@@ -85,14 +85,18 @@ Helm will fail if apiKey is not provided, enforcing secure deployment.
 
 ## Components
 ⸻
+
 Frontend
+
 	•	React + Vite application
 	•	Communicates with backend via /api endpoints
 	•	Can be deployed via Helm along with backend
 	•	Supports markdown response rendering
 
 ⸻
+
 Backend
+
 	•	Python FastAPI service
 	•	Uses Kubernetes Python client to interact with cluster
 	•	Integrates Gemini AI for reasoning
@@ -100,16 +104,20 @@ Backend
 	•	Logs structured data for debugging
 
 ⸻
+
 Security Considerations
+
 	•	RBAC enabled to ensure least-privilege access
 	•	ServiceAccount is created specifically for this application
 	•	Secrets managed via Kubernetes Secret object
 	•	API keys never stored in repo
 
 ⸻
-Contributing
+
+## Contributing
 
 Contributions welcome!
+
 	•	Open issues for bugs or feature requests
 	•	Submit pull requests for improvements
 	•	Follow Helm best practices and maintain secret handling
