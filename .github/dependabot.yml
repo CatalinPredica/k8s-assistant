@@ -1,0 +1,9 @@
+version: 2
+updates:
+  # Keep frontend Docker base images up to date 
+  - package-ecosystem: "docker"
+    directory: "/frontend"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "deps(docker-frontend)"
