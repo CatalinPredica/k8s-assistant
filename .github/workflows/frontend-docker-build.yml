@@ -143,15 +143,10 @@ jobs:
           latest_tag=${{ steps.version.outputs.version }}
           latest_url="https://github.com/${{ github.repository }}/releases/tag/$latest_tag"
           readme="README.md"
-          # Replace or insert latest version at the top
-          if grep -q "^## Latest Version" "$readme"; then
-            sed -i "1,/^$/ s|^## Latest Version.*|## Latest Version\n\nThe latest release is [$latest_tag]($latest_url)|" "$readme"
-          else
-            tmpfile=$(mktemp)
-            echo -e "## Latest Version\n\nThe latest release is [$latest_tag]($latest_url)\n" > "$tmpfile"
-            cat "$readme" >> "$tmpfile"
-            mv "$tmpfile" "$readme"
-          fi
+
+          # Replace the existing "The latest release is [...]" line
+          sed -i "s|^The latest release is .*|The latest release is [$latest_tag]($latest_url)|" "$readme"
+
           git config user.name "GitHub Actions"
           git config user.email "catalinpredica@gmail.com"
           git add "$readme"
