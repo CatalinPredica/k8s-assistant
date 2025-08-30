@@ -1,5 +1,7 @@
 ## Latest Version
 
+The latest release is [0.1.5](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.1.5)
+
 The latest release is [0.1.4](https://github.com/CatalinPredica/TMJ-infra/releases/tag/0.1.4)
 
 The latest release is [0.1.3](https://github.com/CatalinPredica/TMJ-infra/releases/tag/0.1.3)
