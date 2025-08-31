@@ -69,7 +69,6 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
-          no-cache: true
           push: false
           tags: |
             k8s-assistant-frontend:scan
