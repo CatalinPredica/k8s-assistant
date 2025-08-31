@@ -60,7 +60,7 @@ jobs:
           echo "Bump type: $bump"
           echo "New tag: $new_tag"
           echo "version=$new_tag" >> $GITHUB_OUTPUT
-
+          
       - name: Clear Docker cache
         run: docker system prune -af
 
@@ -69,25 +69,6 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
-          load: true
-          push: false
-          pull: true
-          tags: |
-            k8s-assistant-frontend:scan
-
-      - name: Build frontend assets (Node stage)
-        run: |
-          docker build -f frontend/Dockerfile -t k8s-assistant-frontend:builder ./frontend
-          id=$(docker create k8s-assistant-frontend:builder)
-          docker cp $id:/app/dist ./frontend/dist-exported
-          docker cp $id:/app/build-timestamp.txt ./frontend/build-timestamp.txt
-          docker rm $id
-
-      - name: Build final Nginx image (with exported assets)
-        uses: docker/build-push-action@v4
-        with:
-          context: ./frontend
-          file: ./frontend/Dockerfile.final
           load: true
           push: false
           pull: true
