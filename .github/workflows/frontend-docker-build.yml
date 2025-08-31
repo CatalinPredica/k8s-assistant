@@ -64,6 +64,17 @@ jobs:
       - name: Clear Docker cache
         run: docker system prune -af
 
+      - name: Build Docker image locally (no push)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          load: true
+          push: false
+          pull: true
+          tags: |
+            k8s-assistant-frontend:scan
+
       - name: Build frontend assets (Node stage)
         run: |
           docker build -f frontend/Dockerfile -t k8s-assistant-frontend:builder ./frontend
