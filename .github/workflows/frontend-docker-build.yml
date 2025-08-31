@@ -60,7 +60,7 @@ jobs:
           echo "Bump type: $bump"
           echo "New tag: $new_tag"
           echo "version=$new_tag" >> $GITHUB_OUTPUT
-
+          
       - name: Clear Docker cache
         run: docker system prune -af
 
@@ -69,7 +69,9 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/Dockerfile
+          load: true
           push: false
+          pull: true
           tags: |
             k8s-assistant-frontend:scan
 
