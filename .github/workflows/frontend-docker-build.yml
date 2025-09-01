@@ -97,11 +97,39 @@ jobs:
             exit 1
           fi
 
+      - name: Extract version from Docker Hub tags and bump semver (enterprise-grade)
+        id: docker_version
+        run: |
+          # Fetch tags from Docker Hub
+          tags=$(curl -s "https://hub.docker.com/v2/repositories/catalinpredica/k8s-assistant-frontend/tags/?page_size=100" | jq -r '.results[].name' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V)
+          latest_tag=$(echo "$tags" | tail -n 1)
+
+          if [ -z "$latest_tag" ]; then
+            latest_tag="0.1.0"
+          fi
+          echo "Latest Docker Hub tag: $latest_tag"
+          IFS='.' read -r major minor patch <<< "$latest_tag"
+          # Get last commit message
+          commit_msg=$(git log -1 --pretty=%B)
+          echo "Last commit message: $commit_msg"
+          # Determine what to bump
+          if echo "$commit_msg" | grep -q '\[major\]'; then
+            major=$((major+1)); minor=0; patch=0; bump="major"
+          elif echo "$commit_msg" | grep -q '\[minor\]'; then
+            minor=$((minor+1)); patch=0; bump="minor"
+          else
+            patch=$((patch+1)); bump="patch"
+          fi
+          new_tag="$major.$minor.$patch"
+          echo "Bump type: $bump"
+          echo "New Docker tag: $new_tag"
+          echo "docker_version=$new_tag" >> $GITHUB_OUTPUT
+
       - name: Tag and push Docker image after passing scan
         run: |
-          docker tag k8s-assistant-frontend:scan catalinpredica/k8s-assistant-frontend:${{ steps.version.outputs.version }}
+          docker tag k8s-assistant-frontend:scan catalinpredica/k8s-assistant-frontend:${{ steps.docker_version.outputs.docker_version }}
           docker tag k8s-assistant-frontend:scan catalinpredica/k8s-assistant-frontend:latest
-          docker push catalinpredica/k8s-assistant-frontend:${{ steps.version.outputs.version }}
+          docker push catalinpredica/k8s-assistant-frontend:${{ steps.docker_version.outputs.docker_version }}
           docker push catalinpredica/k8s-assistant-frontend:latest
 
       - name: Set up Git for pushing tags
@@ -125,14 +153,14 @@ jobs:
       - name: Update Helm values.yaml and Chart.yaml with new frontend image tag
         run: |
           yq -i '.image.frontend.tag = "${{ steps.version.outputs.version }}"' helm/values.yaml
-          echo "Updated helm/values.yaml frontend tag to ${{ steps.version.outputs.version }}"
+          echo "Updated helm/values.yaml frontend tag to ${{ steps.docker_version.outputs.docker_version }}"
           yq -i '.appVersion = "${{ steps.version.outputs.version }}"' helm/Chart.yaml
           echo "Updated helm/Chart.yaml appVersion to ${{ steps.version.outputs.version }}"
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add helm/values.yaml
           git add helm/Chart.yaml
-          git commit -m "chore: update helm/values.yaml to image tag ${{ steps.version.outputs.version }}" || echo "No changes to commit"
+          git commit -m "chore: update helm/values.yaml to image tag ${{ steps.docker_version.outputs.docker_version }}" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
 
       - name: Create GitHub Release
