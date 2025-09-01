@@ -2,10 +2,9 @@ name: Publish Helm Chart
 
 on:
   push:
-    branches:
-      - main
     paths:
       - 'helm/**'
+      - '.github/workflows/helm-publish.yml'
 
 jobs:
   publish:
