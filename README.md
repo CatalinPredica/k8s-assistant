@@ -133,11 +133,10 @@ helm upgrade test-release ./helm --namespace k8s-assistant -f helm/values.secret
 helm upgrade test-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
 
 
-helm repo add k8s-assistant https://catalinpredica.github.io/k8s-assistant
+Install:
+helm repo add k8s-assistant https://catalinpredica.github.io/k8s-assistant/charts
+helm install test-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
 
-helm install test-release k8s-assistant/k8s-assistant \
-  --namespace k8s-assistant \
-  -f helm/values.secret.yaml \
 
 helm search repo k8s-assistant
 NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
