@@ -5,9 +5,10 @@
   The body styles set up a clean, readable base font and background, enhancing accessibility with good contrast.
   Font smoothing improves text rendering across different platforms and browsers for better UX.
 */
+
 :root {
   --background-color: #f4f7f9;
-  --primary-color: #ffffff;
+  --primary-color: #fff;
   --secondary-color: #eef2f5;
   --accent-color: #007bff;
   --accent-hover-color: #0056b3;
@@ -20,8 +21,8 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -36,13 +37,14 @@ body {
   Box-shadow and border add subtle depth and separation from the background, enhancing focus on the content.
   This container acts as the foundational layout block, ensuring consistent spacing and alignment across different screen sizes.
 */
+
 .app-container {
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2.5rem;
   background-color: var(--primary-color);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 20px rgb(0 0 0 / 8%);
   border: 1px solid var(--border-color);
 }
 
@@ -53,6 +55,7 @@ body {
   The paragraph uses a subtle text color and spacing to complement the title without overpowering it.
   This clear typographic hierarchy improves scannability and user orientation.
 */
+
 .app-header h1 {
   color: var(--text-color);
   font-size: 2rem;
@@ -76,6 +79,7 @@ body {
   Buttons are styled for prominence with clear hover and disabled states, supporting interactive affordance.
   Using flex properties and min-width ensures responsive and accessible controls.
 */
+
 .form-container {
   display: flex;
   gap: 1rem;
@@ -96,7 +100,7 @@ body {
 
 .form-container input[type="text"]:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+  box-shadow: 0 0 0 4px rgb(0 123 255 / 15%);
 }
 
 .form-container input[type="text"]:disabled {
@@ -120,13 +124,13 @@ body {
   transition: background-color 0.3s ease;
 }
 
-.form-container button:hover:not(:disabled) {
-  background-color: var(--accent-hover-color);
-}
-
 .form-container button:disabled {
   background-color: #a0c7ff;
   cursor: not-allowed;
+}
+
+.form-container button:hover:not(:disabled) {
+  background-color: var(--accent-hover-color);
 }
 
 /* Loader Spinner */
@@ -137,8 +141,9 @@ body {
   Size is kept small to avoid distraction but visible enough for clarity.
   Accessibility considerations include ensuring it does not interfere with screen readers.
 */
+
 .loader {
-  border: 4px solid rgba(0, 0, 0, 0.1);
+  border: 4px solid rgb(0 0 0 / 10%);
   border-radius: 50%;
   border-top: 4px solid var(--accent-color);
   width: 20px;
@@ -158,10 +163,11 @@ body {
   Using semi-transparent backgrounds keeps the UI visually balanced.
   Consistent styling helps users quickly identify error states for better UX.
 */
+
 .error-message {
   color: var(--error-color);
-  background-color: rgba(220, 53, 69, 0.05);
-  border: 1px solid rgba(220, 53, 69, 0.2);
+  background-color: rgb(220 53 69 / 5%);
+  border: 1px solid rgb(220 53 69 / 20%);
   padding: 1rem;
   border-radius: 8px;
   margin-top: 1rem;
@@ -176,6 +182,7 @@ body {
   Word wrapping and line height enhance readability on various screen sizes.
   Markdown response styling supports rich text rendering with consistent UI.
 */
+
 .response-container {
   margin-top: 2rem;
 }
@@ -195,7 +202,7 @@ body {
   border: 1px solid var(--border-color);
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
   font-size: 0.75rem;
   line-height: 1.6;
 }
@@ -218,6 +225,7 @@ body {
   Proper margin separates it from other UI elements, maintaining layout clarity.
   Useful for developers and advanced users without impacting general user experience.
 */
+
 .debug-container {
   margin-top: 2rem;
   opacity: 0.8;
