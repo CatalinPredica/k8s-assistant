@@ -59,9 +59,9 @@ The design is robust because:
 
 ---
 
-## Installation (Local / Development)
+## Installation
 
-  1. Clone the repo:
+  1. Add the Helm repo:
 
 ```bash
 helm repo add k8s-assistant https://catalinpredica.github.io/k8s-assistant/charts
@@ -75,10 +75,17 @@ secret:
   apiKey: "YOUR_REAL_API_KEY"
 ```
 
-  3. Deploy with Helm:
+  3. Deploy with Helm from the repo:
 
 ```bash
-helm install test-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
+helm install k8s-assistant-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
+```
+
+  4. Upgrade an existing release
+
+```bash
+helm repo update
+helm upgrade k8s-assistant-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
 ```
 
 Helm will fail if apiKey is not provided, enforcing secure deployment.
