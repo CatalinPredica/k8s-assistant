@@ -3,12 +3,12 @@ entries:
   k8s-assistant:
   - apiVersion: v2
     appVersion: 0.2.3
-    created: "2025-09-01T07:23:08.147813326Z"
+    created: "2025-09-01T08:01:48.992774589Z"
     description: A Kubernetes Assistant with Ollama, FastAPI backend, and React frontend
-    digest: 6fc1fc18bb6f14132b66eaae2d842c04313150866e09932aaca4b19da5e08679
+    digest: 62b27a2dfbf003823a18b04a14218830c0573d3bd3256bfb06dfc627df0dfcf2
     name: k8s-assistant
     type: application
     urls:
     - https://catalinpredica.github.io/k8s-assistant/k8s-assistant-0.1.1.tgz
     version: 0.1.1
-generated: "2025-09-01T07:23:08.14731117Z"
+generated: "2025-09-01T08:01:48.992245656Z"
