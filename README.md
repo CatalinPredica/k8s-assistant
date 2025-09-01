@@ -70,7 +70,7 @@ helm repo upds
 
   2. Create a file values.secret.yaml with your Gemini API key:
 
-```bash
+```yaml
 secret:
   apiKey: "YOUR_REAL_API_KEY"
 ```
