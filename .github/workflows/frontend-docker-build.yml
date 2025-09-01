@@ -80,7 +80,6 @@ jobs:
           VALIDATE_TS: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
           FAIL_ON_ERROR: false
           FAIL_ON_WARNING: false
 
