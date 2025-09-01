@@ -69,7 +69,7 @@ jobs:
 
       - name: Update Helm repo index
         run: |
-          helm repo index charts --url https://catalinpredica.github.io/k8s-assistant
+          helm repo index charts --url https://catalinpredica.github.io/k8s-assistant/charts
 
       - name: Push chart and index to gh-pages
         uses: peaceiris/actions-gh-pages@v3
