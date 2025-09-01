@@ -2,14 +2,14 @@ apiVersion: v1
 entries:
   k8s-assistant:
   - apiVersion: v2
-    appVersion: 0.2.3
-    created: "2025-09-01T11:14:35.077731764Z"
+    appVersion: 0.2.5
+    created: "2025-09-01T14:07:28.371180389Z"
     description: AI-Powered Web Assistant for Kubernetes clusters that lets you query
       and interact with your cluster in natural language
-    digest: 076b2c3b44c43e94491fb3e5d55840d80ba768b391ab793fa86c1f8e032e2cef
+    digest: 053909a034503535320eb2ac635072eedab1d7dfb7d94dcb729832e4693cfd88
     name: k8s-assistant
     type: application
     urls:
-    - https://catalinpredica.github.io/k8s-assistant/charts/k8s-assistant-0.1.5.tgz
-    version: 0.1.5
-generated: "2025-09-01T11:14:35.077217232Z"
+    - https://catalinpredica.github.io/k8s-assistant/charts/k8s-assistant-0.1.6.tgz
+    version: 0.1.6
+generated: "2025-09-01T14:07:28.370660834Z"
