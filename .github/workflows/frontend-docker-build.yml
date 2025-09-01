@@ -126,9 +126,12 @@ jobs:
         run: |
           yq -i '.image.frontend.tag = "${{ steps.version.outputs.version }}"' helm/values.yaml
           echo "Updated helm/values.yaml frontend tag to ${{ steps.version.outputs.version }}"
+          yq -i '.appVersion = "${{ steps.version.outputs.version }}"' helm/Chart.yaml
+          echo "Updated helm/Chart.yaml appVersion to ${{ steps.version.outputs.version }}"
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add helm/values.yaml
+          git add helm/Chart.yaml
           git commit -m "chore: update helm/values.yaml to image tag ${{ steps.version.outputs.version }}" || echo "No changes to commit"
           git push origin HEAD:${GITHUB_REF#refs/heads/}
 
