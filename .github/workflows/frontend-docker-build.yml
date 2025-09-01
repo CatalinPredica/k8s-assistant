@@ -152,7 +152,7 @@ jobs:
           
       - name: Update Helm values.yaml and Chart.yaml with new frontend image tag
         run: |
-          yq -i '.image.frontend.tag = "${{ steps.version.outputs.version }}"' helm/values.yaml
+          yq -i '.image.frontend.tag = "${{ steps.docker_version.outputs.docker_version }}"' helm/values.yaml
           echo "Updated helm/values.yaml frontend tag to ${{ steps.docker_version.outputs.docker_version }}"
           yq -i '.appVersion = "${{ steps.version.outputs.version }}"' helm/Chart.yaml
           echo "Updated helm/Chart.yaml appVersion to ${{ steps.version.outputs.version }}"
