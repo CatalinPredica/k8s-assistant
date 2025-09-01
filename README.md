@@ -129,6 +129,20 @@ docker build -t catalinpredica/k8s-assistant-backend:1.0.6 .
 docker push catalinpredica/k8s-assistant-backend:1.0.6
 cd ..
 helm upgrade test-release ./helm --namespace k8s-assistant -f helm/values.secret.yaml
+ 
+helm upgrade test-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
+
+
+helm repo add k8s-assistant https://catalinpredica.github.io/k8s-assistant
+
+helm install test-release k8s-assistant/k8s-assistant \
+  --namespace k8s-assistant \
+  -f helm/values.secret.yaml \
+
+helm search repo k8s-assistant
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+k8s-assistant/k8s-assistant     0.1.3           0.2.3           AI-Powered Web Assistant for Kubernetes cluster...
+helm upgrade test-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
 
 cd frontend
 docker build -t catalinpredica/k8s-assistant-frontend:1.0.18 .
