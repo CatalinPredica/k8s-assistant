@@ -5,6 +5,10 @@ on:
     paths:
       - 'helm/**'
       - '.github/workflows/helm-publish.yml'
+  workflow_run:
+    workflows: ["K8S Assistant - Frontend Docker Build and Push"]
+    types:
+      - completed
 
 jobs:
   publish:
