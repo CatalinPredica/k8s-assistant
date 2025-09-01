@@ -122,7 +122,7 @@ jobs:
           git tag ${{ steps.version.outputs.version }}
           git push origin ${{ steps.version.outputs.version }}
           
-      - name: Update Helm values.yaml with new frontend image tag
+      - name: Update Helm values.yaml and Chart.yaml with new frontend image tag
         run: |
           yq -i '.image.frontend.tag = "${{ steps.version.outputs.version }}"' helm/values.yaml
           echo "Updated helm/values.yaml frontend tag to ${{ steps.version.outputs.version }}"
