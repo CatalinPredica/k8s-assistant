@@ -32,22 +32,23 @@ Deployable with Helm into any AKS/EKS (or vanilla k8s). This project consists of
 - Backend interacts with the Kubernetes API and uses Gemini AI to interpret queries.
 - Each component runs in its own container.
 
-Key Points in this Workflow
+**Key Points in this Workflow**
 
-	1.	Backend never interprets intent, only executes kubectl_command and maintains step structure.
-	2.	AI only decides intent & next action — never manipulates YAML structure.
-	•	What command(s) to run.
-	•	When to populate final_output.
-	3.	Empty steps are created by backend for AI to fill if needed — ensures flexibility for multi-step reasoning.
-	4.	Single loop is enough for simple queries, multiple loops will be needed for complex issues (e.g., CrashLoopBackOff).
-	5.	Loops continue until final_output is populated — AI decides when reasoning is complete.
+1. Backend never interprets intent, only executes kubectl_command and maintains step structure.
+2. AI only decides intent & next action — never manipulates YAML structure.
+	- What command(s) to run.
+	- When to populate final_output.
+3. Empty steps are created by backend for AI to fill if needed — ensures flexibility for multi-step reasoning.
+4. Single loop is enough for simple queries, multiple loops will be needed for complex issues (e.g., CrashLoopBackOff).
+5. Loops continue until final_output is populated — AI decides when reasoning is complete.
 
-The design is robust because:
+**Robust design:**
 
-	•	You never trust AI with YAML formatting → schema is always correct.
-	•	AI has full context of previous steps → can make intelligent multi-step decisions.
-	•	Backend can audit every command executed → important for security.
-	•	New types of queries or resources can be handled without hardcoding additional logic in backend.
+- You never trust AI with YAML formatting → schema is always correct.
+- AI has full context of previous steps → can make intelligent multi-step decisions.
+- Backend can audit every command executed → important for security.
+- New types of queries or resources can be handled without hardcoding additional logic in backend.
+ 
 ---
 
 ## Prerequisites
@@ -93,31 +94,31 @@ Helm will fail if apiKey is not provided, enforcing secure deployment.
 ## Components
 ⸻
 
-Frontend
+Frontend: Deployemnt and Service
 
-	•	React + Vite application
-	•	Communicates with backend via /api endpoints
-	•	Can be deployed via Helm along with backend
-	•	Supports markdown response rendering
-
-⸻
-
-Backend
-
-	•	Python FastAPI service
-	•	Uses Kubernetes Python client to interact with cluster
-	•	Integrates Gemini AI for reasoning
-	•	Exposes /api/ask endpoint for frontend queries
-	•	Logs structured data for debugging
+- React + Vite application
+- Communicates with backend via /api endpoints
+- Can be deployed via Helm along with backend
+- Supports markdown response rendering
 
 ⸻
 
-Security Considerations
+Backend: Deployment and Service
 
-	•	RBAC enabled to ensure least-privilege access
-	•	ServiceAccount is created specifically for this application
-	•	Secrets managed via Kubernetes Secret object
-	•	API keys never stored in repo
+- Python FastAPI service
+- Uses Kubernetes Python client to interact with cluster
+- Integrates Gemini AI for reasoning
+- Exposes /api/ask endpoint for frontend queries
+- Logs structured data for debugging
+
+⸻
+
+Security Considerations: ClusterRoleBinding, ServiceAccount and Secret
+
+- RBAC enabled to ensure least-privilege access
+- ServiceAccount is created specifically for this application
+- Secrets managed via Kubernetes Secret object
+- API keys never stored in repo
 
 ⸻
 
@@ -125,9 +126,9 @@ Security Considerations
 
 Contributions welcome!
 
-	•	Open issues for bugs or feature requests
-	•	Submit pull requests for improvements
-	•	Follow Helm best practices and maintain secret handling
+- Open issues for bugs or feature requests
+- Submit pull requests for improvements
+- Follow Helm best practices and maintain secret handling
 
 
 
