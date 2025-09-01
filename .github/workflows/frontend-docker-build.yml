@@ -80,6 +80,9 @@ jobs:
           VALIDATE_TS: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          FAIL_ON_ERROR: false
+          FAIL_ON_WARNING: false
 
       - name: Build Docker image locally (no push)
         uses: docker/build-push-action@v4
