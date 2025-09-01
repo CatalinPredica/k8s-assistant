@@ -130,3 +130,8 @@ Contributions welcome!
 - Submit pull requests for improvements
 - Follow Helm best practices and maintain secret handling
 
+---
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
