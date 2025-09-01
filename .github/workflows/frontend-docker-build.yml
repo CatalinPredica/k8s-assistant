@@ -73,10 +73,13 @@ jobs:
         working-directory: ./frontend
         run: npm ci
 
-      - name: Run ESLint on frontend files
-        working-directory: ./frontend
-        run: |
-          npx eslint . --max-warnings=0
+      - name: Run Super-Linter on frontend
+        uses: github/super-linter@v5
+        env:
+          VALIDATE_JS: true
+          VALIDATE_TS: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Docker image locally (no push)
         uses: docker/build-push-action@v4
