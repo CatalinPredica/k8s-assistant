@@ -1,5 +1,6 @@
 /* General Body and Font Styling */
-/* 
+
+ /* 
   Root variables define the color palette and key UI colors used throughout the application.
   Using CSS variables allows for easy theming and consistent styling, facilitating maintainability and scalability.
   The body styles set up a clean, readable base font and background, enhancing accessibility with good contrast.
@@ -21,8 +22,8 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -30,8 +31,9 @@ body {
   color: var(--text-color);
 }
 
-/* Main App Container */
-/*
+ /* Main App Container */
+
+ /*
   The main container centers the application content and constrains its width for optimal readability on large screens.
   Padding and border-radius create a comfortable visual space and soften edges, improving aesthetics.
   Box-shadow and border add subtle depth and separation from the background, enhancing focus on the content.
@@ -48,8 +50,9 @@ body {
   border: 1px solid var(--border-color);
 }
 
-/* Header */
-/*
+ /* Header */
+
+ /*
   Header styles define the primary page title and subtitle, establishing hierarchy and branding.
   The h1 uses a larger font size and a bottom border to visually separate the header from the content.
   The paragraph uses a subtle text color and spacing to complement the title without overpowering it.
@@ -70,8 +73,9 @@ body {
   font-size: 1.1rem;
 }
 
-/* Form Styling */
-/*
+ /* Form Styling */
+
+ /*
   The form container uses flexbox to align input and button horizontally with consistent spacing.
   Input fields are styled for clarity and accessibility, with sufficient padding and font size.
   Border radius and color transitions provide visual feedback on focus, enhancing usability.
@@ -133,8 +137,9 @@ body {
   background-color: var(--accent-hover-color);
 }
 
-/* Loader Spinner */
-/*
+ /* Loader Spinner */
+
+ /*
   The loader spinner provides visual feedback during asynchronous operations.
   Circular spinner with animation ensures users are aware of ongoing processes.
   Using border colors and animation creates a smooth spinning effect without images.
@@ -156,8 +161,9 @@ body {
   100% { transform: rotate(360deg); }
 }
 
-/* Error Message */
-/*
+ /* Error Message */
+
+ /*
   Error messages use color and background to draw attention without overwhelming the user.
   Border and padding create a distinct, accessible alert area.
   Using semi-transparent backgrounds keeps the UI visually balanced.
@@ -173,8 +179,9 @@ body {
   margin-top: 1rem;
 }
 
-/* Response Container */
-/*
+ /* Response Container */
+
+ /*
   Response container styles define how the output or results are presented.
   Headings use clear typography and borders for separation.
   Preformatted text blocks use monospace fonts for readability of code or structured data.
@@ -202,7 +209,7 @@ body {
   border: 1px solid var(--border-color);
   white-space: pre-wrap;
   word-wrap: break-word;
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
   font-size: 0.75rem;
   line-height: 1.6;
 }
@@ -218,8 +225,9 @@ body {
   line-height: 1.6;
 }
 
-/* Debugging Section */
-/*
+ /* Debugging Section */
+
+ /*
   Debug container provides a visually subdued area for displaying debug information.
   Reduced opacity ensures it does not distract from primary content while remaining accessible.
   Proper margin separates it from other UI elements, maintaining layout clarity.
