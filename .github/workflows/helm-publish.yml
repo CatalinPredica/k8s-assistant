@@ -77,6 +77,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./charts
           publish_branch: gh-pages
+          destination_dir: charts
           user_name: github-actions
           user_email: github-actions@github.com
           keep_files: true
