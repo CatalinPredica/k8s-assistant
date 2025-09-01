@@ -6,4 +6,4 @@ updates:
     schedule:
       interval: "daily"
     commit-message:
-      prefix: "deps(docker-frontend)"
+      prefix: "deps(docker-base-images-frontend)"
