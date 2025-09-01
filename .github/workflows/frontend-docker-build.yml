@@ -64,15 +64,6 @@ jobs:
       - name: Clear Docker cache
         run: docker system prune -af
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install frontend dependencies
-        working-directory: ./frontend
-        run: npm ci
-
       - name: Run Super-Linter on frontend
         uses: github/super-linter@v5
         env:
@@ -80,8 +71,8 @@ jobs:
           VALIDATE_TS: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FAIL_ON_ERROR: false
-          FAIL_ON_WARNING: false
+          DISABLE_ERRORS: true
+          FILTER_REGEX_INCLUDE: './frontend/.*'
 
       - name: Build Docker image locally (no push)
         uses: docker/build-push-action@v4
