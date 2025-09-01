@@ -34,6 +34,7 @@ jobs:
             echo "bump=minor" >> $GITHUB_OUTPUT
           else
             echo "bump=patch" >> $GITHUB_OUTPUT
+          fi
 
       - name: Bump Chart.yaml version
         id: bump_version
