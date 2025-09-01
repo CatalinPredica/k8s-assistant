@@ -1,6 +1,6 @@
 # Kubernetes Assistant
 
-The latest release is [0.2.9](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.9)
+The latest release is [0.2.10](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.10)
 
 An AI-powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
 (e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers.
