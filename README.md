@@ -64,21 +64,21 @@ The design is robust because:
   1. Clone the repo:
 
 ```bash
-git clone https://github.com/CatalinPredica/k8s-assistant.git
-cd helm
+helm repo add k8s-assistant https://catalinpredica.github.io/k8s-assistant/charts
+helm repo upds
 ```
 
   2. Create a file values.secret.yaml with your Gemini API key:
 
 ```bash
 secret:
-apiKey: "YOUR_REAL_API_KEY"
+  apiKey: "YOUR_REAL_API_KEY"
 ```
 
   3. Deploy with Helm:
 
 ```bash
-helm upgrade --install test-release ./ -f values.secret.yaml --namespace k8s-assistant 
+helm install test-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
 ```
 
 Helm will fail if apiKey is not provided, enforcing secure deployment.
