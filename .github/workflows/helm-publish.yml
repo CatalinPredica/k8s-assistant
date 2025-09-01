@@ -1,0 +1,73 @@
+name: Publish Helm Chart
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'helm/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      - name: Extract current Chart.yaml version
+        id: get_version
+        run: |
+          VERSION=$(grep '^version:' helm/Chart.yaml | awk '{print $2}')
+          echo "Current Chart version: $VERSION"
+          echo "::set-output name=current::$VERSION"
+
+      - name: Determine bump type from commit
+        id: bump_type
+        run: |
+          echo "Commit message: ${{ github.event.head_commit.message }}"
+          if echo "${{ github.event.head_commit.message }}" | grep -q '\[major\]'; then
+            echo "bump=major" >> $GITHUB_OUTPUT
+          elif echo "${{ github.event.head_commit.message }}" | grep -q '\[minor\]'; then
+            echo "bump=minor" >> $GITHUB_OUTPUT
+          else
+            echo "bump=patch" >> $GITHUB_OUTPUT
+
+      - name: Bump Chart.yaml version
+        id: bump_version
+        run: |
+          current=${{ steps.get_version.outputs.current }}
+          bump=${{ steps.bump_type.outputs.bump }}
+          IFS='.' read -r major minor patch <<< "$current"
+          if [ "$bump" = "major" ]; then
+            major=$((major+1)); minor=0; patch=0
+          elif [ "$bump" = "minor" ]; then
+            minor=$((minor+1)); patch=0
+          else
+            patch=$((patch+1))
+          fi
+          new_version="$major.$minor.$patch"
+          echo "New Chart version: $new_version"
+          echo "::set-output name=new_version::$new_version"
+          sed -i "s/^version: .*/version: $new_version/" helm/Chart.yaml
+
+      - name: Package Helm chart
+        run: |
+          mkdir -p charts
+          helm package helm --destination charts
+
+      - name: Update Helm repo index
+        run: |
+          helm repo index charts --url https://catalinpredica.github.io/k8s-assistant
+
+      - name: Push chart and index to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./charts
+          publish_branch: gh-pages
+          user_name: github-actions
+          user_email: github-actions@github.com
