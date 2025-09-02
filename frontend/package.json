@@ -7,9 +7,6 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "ts-standard": {
-    "project": "./frontend/tsconfig.json"
-  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -21,5 +18,8 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@vitejs/plugin-react": "^4.2.1"
+  },
+  "ts-standard": {
+    "ignore": ["vite.config.ts"]
   }
 }
