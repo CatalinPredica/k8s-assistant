@@ -71,7 +71,7 @@ jobs:
           VALIDATE_TS: true
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISABLE_ERRORS: true
+          DISABLE_ERRORS: false
           FILTER_REGEX_INCLUDE: './frontend/.*'
           FILTER_REGEX_EXCLUDE: './frontend/vite.config.ts'
           TYPESCRIPT_STANDARD_CONFIG_FILE: frontend/tsconfig.json
