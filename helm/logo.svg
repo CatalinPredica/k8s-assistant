@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<svg width="98" height="98" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid" version="1.1">
+ <g class="layer">
+  <title>K8S-Assistant</title>
+  <g id="svg_1">
+   <path d="m29.27,8.19c-3.07,0.05 -5.89,1.65 -7.4,4.19l0,0l-19.73,32.54c-1.53,2.53 -1.53,5.63 0,8.16l0,0l19.73,32.81c1.49,2.58 4.3,4.23 7.4,4.34l0,0l39.46,0c3.09,-0.1 5.91,-1.74 7.4,-4.32l0,0l19.72,-32.62c0.77,-1.28 1.16,-2.71 1.16,-4.14l0,0c0,-1.43 -0.39,-2.86 -1.16,-4.14l0,0l-19.72,-32.63c-1.51,-2.55 -4.32,-4.14 -7.4,-4.19l0,0l-39.46,0z" fill="#4285F4" id="svg_2"/>
+   <path d="m89.55,60.87l-13.56,22.43c-1.5,2.58 -4.31,4.22 -7.4,4.32l-15.03,0l-21.93,-21.04l6.47,-19.83l-6.47,-20.05l6.64,4.24l8.93,8.57l-4.17,-12.81l31.26,19.98l15.26,14.18z" fill="#000000" fill-opacity="0.07" fill-rule="nonzero" id="svg_3"/>
+   <text fill="#ffffff" font-family="Courier" font-size="24" id="svg_6" stroke-width="0" text-anchor="middle" transform="matrix(1.91502 0 0 1.4707 -121.333 -78.5955)" x="88.69" xml:space="preserve" y="91.99">AI</text>
+  </g>
+ </g>
+</svg>

@@ -71,9 +71,11 @@ helm repo update
 
   2. Create a file values.secret.yaml with your Gemini API key:
 
-```yaml
+```bash
+cat <<EOF > helm/values.secret.yaml
 secret:
   apiKey: "YOUR_REAL_API_KEY"
+EOF
 ```
 
   3. Deploy with Helm from the repo:

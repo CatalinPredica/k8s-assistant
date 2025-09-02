@@ -4,3 +4,4 @@ description: AI-Powered Web Assistant for Kubernetes clusters that lets you quer
 type: application
 version: 0.1.24
 appVersion: "0.2.22"
+icon: https://raw.githubusercontent.com/CatalinPredica/k8s-assistant/main/helm/logo.svg

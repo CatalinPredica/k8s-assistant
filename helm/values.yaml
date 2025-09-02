@@ -32,6 +32,6 @@ config:
 secret:
   enabled: true
   name: "k8s-assistant-gemini-secret"
-  apiKey: "" # users must provide their own API key here
+  apiKey: "YOUR_REAL_API_KEY" # users must provide their own API key here
 env:
   GEMINI_MODEL: "gemini-2.5-flash"
