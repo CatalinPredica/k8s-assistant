@@ -73,8 +73,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: true
           FILTER_REGEX_INCLUDE: './frontend/.*'
-          TYPESCRIPT_ES_CONFIG_FILE: 'frontend/tsconfig.json'
-          TSX_CONFIG_FILE: 'frontend/tsconfig.json'
 
       - name: Build Docker image locally (no push)
         uses: docker/build-push-action@v4
