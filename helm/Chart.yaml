@@ -3,4 +3,4 @@ name: k8s-assistant
 description: AI-Powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language
 type: application
 version: 0.1.20
-appVersion: "0.2.18"
+appVersion: "0.2.19"
