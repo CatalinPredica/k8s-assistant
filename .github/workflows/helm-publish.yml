@@ -80,7 +80,7 @@ jobs:
           helm repo index charts --url https://catalinpredica.github.io/k8s-assistant/charts
 
       - name: Push chart and index to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./charts
