@@ -60,7 +60,8 @@ jobs:
           echo "Bump type: $bump"
           echo "New tag: $new_tag"
           echo "version=$new_tag" >> $GITHUB_OUTPUT
-          
+
+# Enable if you want to clear Docker cache before build    
 #      - name: Clear Docker cache
 #        run: docker system prune -af
 
