@@ -72,8 +72,8 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: false
-          FILTER_REGEX_INCLUDE: '^frontend/.*'
-          FILTER_REGEX_EXCLUDE: '^frontend/vite\.config\.ts$'
+          FILTER_REGEX_INCLUDE: '^frontend/'
+          FILTER_REGEX_EXCLUDE: (^frontend/vite\.config\.ts$|^helm/|^backend/|^\.github/)
           TYPESCRIPT_STANDARD_CONFIG_FILE: frontend/tsconfig.json
 
       - name: Build Docker image locally (no push)
