@@ -6,7 +6,7 @@ image:
     pullPolicy: IfNotPresent
   frontend:
     repository: catalinpredica/k8s-assistant-frontend
-    tag: "1.0.39"
+    tag: "1.0.40"
     pullPolicy: IfNotPresent
 service:
   backend:
