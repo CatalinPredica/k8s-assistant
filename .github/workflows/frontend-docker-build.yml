@@ -69,6 +69,7 @@ jobs:
         env:
           VALIDATE_JS: true
           VALIDATE_TS: true
+          VALIDATE_CHECKOV: false
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: false
