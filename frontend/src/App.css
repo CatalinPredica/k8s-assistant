@@ -9,7 +9,7 @@
 
 :root {
   --background-color: #f4f7f9;
-  --primary-color: #ffffff;
+  --primary-color: #fff;
   --secondary-color: #eef2f5;
   --accent-color: #007bff;
   --accent-hover-color: #0056b3;
@@ -32,6 +32,7 @@ body {
 }
 
  /* Main App Container */
+
  /*
   The main container centers the application content and constrains its width for optimal readability on large screens.
   Padding and border-radius create a comfortable visual space and soften edges, improving aesthetics.
