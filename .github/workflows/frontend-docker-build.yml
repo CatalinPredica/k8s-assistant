@@ -65,18 +65,17 @@ jobs:
 #        run: docker system prune -af
 
       - name: Run Super-Linter on frontend
-        uses: github/super-linter@v7
+        uses: github/super-linter@v5
         env:
           VALIDATE_JS: true
           VALIDATE_TS: true
-          VALIDATE_CHECKOV: false
-          DEBUG: true
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: false
-          FILTER_REGEX_INCLUDE: '^frontend/'
-          FILTER_REGEX_EXCLUDE: (^frontend/vite\.config\.ts$|^helm/|^backend/|^\.github/)
+          FILTER_REGEX_INCLUDE: './frontend/.*'
+          FILTER_REGEX_EXCLUDE: './frontend/vite.config.ts'
           TYPESCRIPT_STANDARD_CONFIG_FILE: frontend/tsconfig.json
+
 
       - name: Build Docker image locally (no push)
         uses: docker/build-push-action@v4
