@@ -65,7 +65,7 @@ jobs:
 #        run: docker system prune -af
 
       - name: Run Super-Linter on frontend
-        uses: github/super-linter@v5
+        uses: github/super-linter@v7
         env:
           VALIDATE_JS: true
           VALIDATE_TS: true
