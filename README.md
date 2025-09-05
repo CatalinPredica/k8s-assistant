@@ -95,8 +95,9 @@ helm upgrade k8s-assistant-release k8s-assistant/k8s-assistant --namespace k8s-a
 
 Helm will fail if apiKey is not provided, enforcing secure deployment.
 
+---
+
 ## Components
-⸻
 
 Frontend: Deployemnt and Service
 
@@ -124,7 +125,7 @@ Security Considerations: ClusterRoleBinding, ServiceAccount and Secret
 - Secrets managed via Kubernetes Secret object
 - API keys never stored in repo
 
-⸻
+---
 
 ## Contributing
 
