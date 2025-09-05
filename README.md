@@ -28,8 +28,7 @@ Deployable with Helm into any AKS/EKS (or vanilla k8s). This project consists of
 
 ## Architecture
 
-[User] —> [React Frontend] —> [Python Backend / FastAPI] —> [Kubernetes Cluster]
-(Gemini AI reasoning)
+![Architecture](docs/k8s-assistant_architecture.svg)
 
 - Frontend communicates with backend via API.
 - Backend interacts with the Kubernetes API and uses Gemini AI to interpret queries.
