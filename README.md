@@ -1,6 +1,6 @@
 # Kubernetes Assistant
 
-The latest App release is [0.2.23](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.23)
+[![App release](https://img.shields.io/badge/App%20release-0.2.23-blue)](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.23)
 
 An AI-powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
 (e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers.
