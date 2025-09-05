@@ -192,8 +192,9 @@ jobs:
           latest_url="https://github.com/${{ github.repository }}/releases/tag/$latest_tag"
           readme="README.md"
 
-          # Replace App release and Frontend badges only, keep Backend and Helm unchanged
-          sed -i -E "s|\[!\[App release\]\(.*\)\][[:space:]]*\[!\[Frontend\]\(.*\)\]|[![App release](https://img.shields.io/badge/App%20release-$latest_tag-blue)]($latest_url) [![Frontend](https://img.shields.io/badge/Frontend-${{ steps.docker_version.outputs.docker_version }}-purple)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-frontend/general)|" $readme
+          # Replace App release and Frontend badges with latest versions
+          sed -i -E "s|\[!\[App release\]\(https://img\.shields\.io/badge/App%20release-[0-9]+\.[0-9]+\.[0-9]+-blue\)\]\(https://github\.com/.*/releases/tag/[0-9]+\.[0-9]+\.[0-9]+\)|[![App release](https://img.shields.io/badge/App%20release-$latest_tag-blue)]($latest_url)|" $readme
+          sed -i -E "s|\[!\[Frontend\]\(https://img\.shields\.io/badge/Frontend-[0-9]+\.[0-9]+\.[0-9]+-purple\)\]\(https://hub\.docker\.com/repository/docker/.*/k8s-assistant-frontend/general\)|[![Frontend](https://img.shields.io/badge/Frontend-${{ steps.docker_version.outputs.docker_version }}-purple)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-frontend/general)|" $readme
 
           git config user.name "GitHub Actions"
           git config user.email "catalinpredica@gmail.com"
