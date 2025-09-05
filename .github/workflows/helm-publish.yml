@@ -89,3 +89,17 @@ jobs:
           user_name: github-actions
           user_email: github-actions@github.com
           keep_files: true
+
+      - name: Update README.md Helm badge
+        run: |
+          readme="README.md"
+          new_version=${{ steps.bump_version.outputs.new_version }}
+
+          # Replace Helm badge version in README.md
+          sed -i -E "s|\[!\[Helm\]\(https://img\.shields\.io/badge/Helm-[0-9]+\.[0-9]+\.[0-9]+-red\)\]\(https://catalinpredica\.github\.io/k8s-assistant/\)|[![Helm](https://img.shields.io/badge/Helm-$new_version-red)](https://catalinpredica.github.io/k8s-assistant/)|" $readme
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add "$readme"
+          git commit -m "docs: update Helm badge to version $new_version" || echo "No changes to commit"
+          git push origin main
