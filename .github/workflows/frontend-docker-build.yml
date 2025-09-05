@@ -192,8 +192,8 @@ jobs:
           latest_url="https://github.com/${{ github.repository }}/releases/tag/$latest_tag"
           readme="README.md"
 
-          # Replace the existing "The latest release is [...]" line
-          sed -i "s|^The latest release is .*|The latest release is [$latest_tag]($latest_url)|" "$readme"
+          # Replace App release and Frontend badges only, keep Backend and Helm unchanged
+          sed -i -E "s|\[!\[App release\]\(.*\)\][[:space:]]*\[!\[Frontend\]\(.*\)\]|[![App release](https://img.shields.io/badge/App%20release-$latest_tag-blue)]($latest_url) [![Frontend](https://img.shields.io/badge/Frontend-${{ steps.docker_version.outputs.docker_version }}-purple)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-frontend/general)|" \"$readme\"
 
           git config user.name "GitHub Actions"
           git config user.email "catalinpredica@gmail.com"
