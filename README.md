@@ -93,6 +93,12 @@ helm repo update
 helm upgrade k8s-assistant-release k8s-assistant/k8s-assistant --namespace k8s-assistant -f helm/values.secret.yaml
 ```
 
+  5. Access the Web-UI
+
+```bash
+kubectl port-forward service/k8s-assistant-release-k8s-assistant-frontend 8080:80 -n k8s-assistant
+```
+
 Helm will fail if apiKey is not provided, enforcing secure deployment.
 
 ---
