@@ -26,7 +26,7 @@ jobs:
           tags: k8s-assistant-frontend:scan
 
       - name: Run Trivy scan
-        uses: aquasecurity/trivy-action@0.33.0
+        uses: aquasecurity/trivy-action@0.33.1
         with:
           image-ref: k8s-assistant-frontend:scan
           exit-code: 1      # fail on vulnerabilities
