@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-assistant-operator
+  namespace: k8s-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      control-plane: k8s-assistant-operator
+  template:
+    metadata:
+      labels:
+        control-plane: k8s-assistant-operator
+    spec:
+      serviceAccountName: k8s-assistant-operator
+      containers:
+        - name: manager
+          image: catalinpredica/k8s-assistant-operator:latest
+          command:
+            - /manager
+          imagePullPolicy: Always

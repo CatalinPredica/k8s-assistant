@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: k8s-assistant-operator
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "secrets", "configmaps"]
+    verbs: ["*"]
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets"]
+    verbs: ["*"]
+  - apiGroups: ["k8s-assistant.io"]
+    resources: ["k8sassistants", "k8sassistants/status"]
+    verbs: ["*"]
