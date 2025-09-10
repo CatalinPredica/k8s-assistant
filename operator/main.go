@@ -4,8 +4,8 @@ import (
 	"flag"
 	"os"
 
-	appv1alpha1 "github.com/CatalinPredica/k8s-assistant/operator/api/v1alpha1"
-	"github.com/CatalinPredica/k8s-assistant/operator/controllers"
+	appv1alpha1 "github.com/catalinpredica/k8s-assistant/operator/api/v1alpha1"
+	"github.com/catalinpredica/k8s-assistant/operator/controllers"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"

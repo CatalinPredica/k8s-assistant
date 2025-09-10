@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	appv1alpha1 "github.com/CatalinPredica/k8s-assistant/operator/api/v1alpha1"
+	appv1alpha1 "github.com/catalinpredica/k8s-assistant/operator/api/v1alpha1"
 	"helm.sh/helm/v3/pkg/action"
 	"helm.sh/helm/v3/pkg/chart/loader"
 	"helm.sh/helm/v3/pkg/cli"
