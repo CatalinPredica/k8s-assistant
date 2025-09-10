@@ -3,7 +3,7 @@
 [![App release](https://img.shields.io/badge/App%20release-0.2.41-blue)](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.41)
 [![Frontend](https://img.shields.io/badge/Frontend-1.0.54-purple)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-frontend/general)
 [![Backend](https://img.shields.io/badge/Backend-1.0.6-yellow)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-backend/general)
-[![Helm](https://img.shields.io/badge/Helm-0.1.44-red)](https://catalinpredica.github.io/k8s-assistant/)
+[![Helm](https://img.shields.io/badge/Helm-0.1.45-red)](https://catalinpredica.github.io/k8s-assistant/)
 
 An AI-powered Web Assistant for Kubernetes clusters that lets you query and interact with your cluster in natural language:
 (e.g., “what pods are failing in operations?”), executes them against the cluster, and returns formatted answers.
