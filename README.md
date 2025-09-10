@@ -1,7 +1,7 @@
 # Kubernetes Assistant
 
-[![App release](https://img.shields.io/badge/App%20release-0.2.39-blue)](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.39)
-[![Frontend](https://img.shields.io/badge/Frontend-1.0.52-purple)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-frontend/general)
+[![App release](https://img.shields.io/badge/App%20release-0.2.40-blue)](https://github.com/CatalinPredica/k8s-assistant/releases/tag/0.2.40)
+[![Frontend](https://img.shields.io/badge/Frontend-1.0.53-purple)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-frontend/general)
 [![Backend](https://img.shields.io/badge/Backend-1.0.6-yellow)](https://hub.docker.com/repository/docker/catalinpredica/k8s-assistant-backend/general)
 [![Helm](https://img.shields.io/badge/Helm-0.1.43-red)](https://catalinpredica.github.io/k8s-assistant/)
 
