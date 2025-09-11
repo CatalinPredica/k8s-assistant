@@ -3,12 +3,7 @@
 
 Installation ok k8s-assistant with operator:
 
-
-kubectl apply -f config/manager/manager.yaml
-
-kubectl apply -f config/rbac/service_account.yaml
-kubectl create clusterrolebinding operator-admin --clusterrole=cluster-admin --serviceaccount=operator:controller-manager
-
+kubectl apply -f operator/operator-bootstrap.yaml
 
 CRD
 
@@ -27,3 +22,5 @@ spec:
     backend: 1
 EOF
 
+Access k8s-assistant Web-UI:
+kubectl port-forward service/my-assistant-k8s-assistant-frontend 8080:80 -n k8s-assistant
