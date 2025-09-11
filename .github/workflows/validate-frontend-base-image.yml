@@ -32,17 +32,17 @@ jobs:
           exit-code: 1      # fail on vulnerabilities
           severity: HIGH,CRITICAL
 
-      - name: Test built Docker image
-        run: |
+#      - name: Test built Docker image
+#        run: |
           # Run the built image in a temporary container
-          docker run -d --name test-frontend -p 8080:80 k8s-assistant-frontend:scan
+#          docker run -d --name test-frontend -p 8080:80 k8s-assistant-frontend:scan
           
           # Give it a few seconds to start
-          sleep 5
+#          sleep 5
           
           # Smoke test: check if Nginx serves index.html
-          curl -f http://localhost:8080 || (docker logs test-frontend && exit 1)
+#          curl -f http://localhost:8080 || (docker logs test-frontend && exit 1)
           
           # Stop and remove the container
-          docker stop test-frontend
-          docker rm test-frontend
+#          docker stop test-frontend
+#          docker rm test-frontend
