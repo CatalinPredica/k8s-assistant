@@ -1,0 +1,6 @@
+# Use the 'create api' subcommand to add watches to this file.
+- group: apps.catalin.dev
+  version: v1alpha1
+  kind: K8sAssistant
+  chart: helm-charts/k8s-assistant
+# +kubebuilder:scaffold:watch

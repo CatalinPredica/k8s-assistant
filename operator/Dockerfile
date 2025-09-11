@@ -1,12 +1,7 @@
-FROM golang:1.23 as builder
-WORKDIR /workspace
-COPY go.mod go.sum ./
-RUN go mod download
-COPY . .
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager main.go
+# Build the manager binary
+FROM quay.io/operator-framework/helm-operator:v1.41.1
 
-FROM gcr.io/distroless/base-debian11
-WORKDIR /
-COPY --from=builder /workspace/manager .
-USER 65532:65532
-ENTRYPOINT ["/manager"]
+ENV HOME=/opt/helm
+COPY watches.yaml ${HOME}/watches.yaml
+COPY helm-charts  ${HOME}/helm-charts
+WORKDIR ${HOME}

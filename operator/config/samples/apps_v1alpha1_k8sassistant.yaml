@@ -1,0 +1,44 @@
+apiVersion: apps.catalin.dev/v1alpha1
+kind: K8sAssistant
+metadata:
+  name: k8sassistant-sample
+spec:
+  # Default values copied from <project_dir>/helm-charts/k8s-assistant/values.yaml
+  affinity: {}
+  config:
+    BACKEND_LOG_LEVEL: info
+  env:
+    GEMINI_MODEL: gemini-2.5-flash
+  image:
+    backend:
+      pullPolicy: IfNotPresent
+      repository: catalinpredica/k8s-assistant-backend
+      tag: 1.0.6
+    frontend:
+      pullPolicy: IfNotPresent
+      repository: catalinpredica/k8s-assistant-frontend
+      tag: 1.0.54
+  nodeSelector: {}
+  rbac:
+    create: true
+  replicaCount: 1
+  resources: {}
+  secret:
+    apiKey: YOUR_REAL_API_KEY
+    enabled: true
+    name: k8s-assistant-gemini-secret
+  service:
+    backend:
+      port: 8000
+      targetPort: 8000
+      type: ClusterIP
+    frontend:
+      port: 80
+      targetPort: 80
+      type: ClusterIP
+  serviceAccount:
+    create: true
+    name: ""
+  tolerations: []
+  
+  
